@@ -6,14 +6,28 @@
 bool isPressed = false;
 bool isOn = false;
 
+XY6015 psu1;
+XY6015 psu2;
+XY6015 psu3;
+XY6015 psu4;
+XY6015 psu5;
+XY6015 psu6;
 
-XY6015 psu;
+void setVoltage(int index, float voltage);
+void setCurrent(int index, float current);
+void read(int index);
+void toggle(int index);
 
 void setup()
 {
   pinMode(button, INPUT_PULLUP);
   Serial.begin(9600);
-  psu.begin(115200, 0x01);
+  psu1.begin(115200, 1, 1);
+  psu2.begin(115200, 1, 2);
+  psu3.begin(115200, 1, 3);
+  psu4.begin(115200, 1, 4);
+  psu5.begin(115200, 1, 5);
+  psu6.begin(115200, 1, 6);
 }
 
 void loop()
@@ -22,30 +36,64 @@ void loop()
   if (Serial.available())
   {
     String received = Serial.readStringUntil('\n');
-    String outputType = received.substring(0, 4); // select the first 4 characters of command
+    String outputType = received.substring(1, 5); // select the first 4 characters of command
+    int index = received.substring(0, 1).toInt();
 
     if (outputType == "SETV")
     {
-      float voltage = received.substring(4, received.length()).toFloat();
-      psu.setVoltage(voltage);
+      float voltage = received.substring(5, received.length()).toFloat();
+      setVoltage(index, voltage);
+    }
+    else if (outputType == "SETA")
+    {
+      float curr = received.substring(5, received.length()).toFloat();
+      setCurrent(index, curr);
+    }
+    else if (outputType == "READ")
+    {
+      read(index);
     }
     else if (outputType == "TOGG")
     {
-      Serial.println("TOGG: " + String(isPressed));
-      ((isPressed) ? psu.toggle(false) : psu.toggle(true));
-      isPressed = !isPressed;
+      toggle(index);
     }
   }
-
-  // if (digitalRead(button) && !isPressed)
-  // {
-
-  //   psu.toggle(true);
-
-  //   Serial.println("Pressed");
-  // }
-  // else if (!digitalRead(button) && isPressed)
-  // {
-  //   isPressed = !isPressed;
-  // }
 }
+
+void setVoltage(int index, float voltage)
+{
+  if (index == 1) psu1.setVoltage(voltage);
+  if (index == 2) psu2.setVoltage(voltage);
+  if (index == 3) psu3.setVoltage(voltage);
+  if (index == 4) psu4.setVoltage(voltage);
+  if (index == 5) psu5.setVoltage(voltage);
+  if (index == 6) psu6.setVoltage(voltage);
+}
+void setCurrent(int index, float current)
+{
+  if (index == 1) psu1.setCurrent(current);
+  if (index == 2) psu2.setCurrent(current);
+  if (index == 3) psu3.setCurrent(current);
+  if (index == 4) psu4.setCurrent(current);
+  if (index == 5) psu5.setCurrent(current);
+  if (index == 6) psu6.setCurrent(current);
+}
+void read(int index)
+{
+  if (index == 1) psu1.read();
+  if (index == 2) psu2.read();
+  if (index == 3) psu3.read();
+  if (index == 4) psu4.read();
+  if (index == 5) psu5.read();
+  if (index == 6) psu6.read();
+}
+void toggle(int index)
+{
+  if (index == 1) psu1.toggle();
+  if (index == 2) psu2.toggle();
+  if (index == 3) psu3.toggle();
+  if (index == 4) psu4.toggle();
+  if (index == 5) psu5.toggle();
+  if (index == 6) psu6.toggle();
+}
+

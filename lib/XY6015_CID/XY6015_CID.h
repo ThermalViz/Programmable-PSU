@@ -8,13 +8,15 @@ class XY6015
     public:
         Modbus modbus;
         int slaveAdress;
+        bool status;
 
-        void begin(unsigned long baud, byte address);
+        void begin(unsigned long baud, byte address, int index);
         void setVoltage(float v);
         void setCurrent(float a);
-        void toggle(bool status);
+        void toggle();
+        void read();
     private:
-        void createFrame(byte register, int value);
+        void createFrame(byte register, int value, String mode);
 };
 
 #endif
