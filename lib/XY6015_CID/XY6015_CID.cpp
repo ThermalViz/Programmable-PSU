@@ -1,9 +1,15 @@
 #include "XY6015_CID.h"
 
-void XY6015::begin(unsigned long baud, int indx)
+void XY6015::begin(unsigned long baud, HardwareSerial serial)
 {
-    index = indx;
-    modbus.begin(baud, index);
+    modbus.begin(baud, serial);
+    slaveAdress = 1;
+    status = false;
+}
+
+void XY6015::begin(unsigned long baud, SoftwareSerial serial)
+{
+    modbus.begin(baud, serial);
     slaveAdress = 1;
     status = false;
 }

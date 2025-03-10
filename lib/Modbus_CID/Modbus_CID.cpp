@@ -1,32 +1,16 @@
 #include "Modbus_CID.h"
 
-void Modbus::begin(unsigned long baud, int index)
+void Modbus::begin(unsigned long baud, HardwareSerial &serial)
 {
-    Modbus::index = index;
-    switch (index)
-    {
-    case 1:
-        Serial1.begin(baud);
-        break;
-    case 2:
-        Serial2.begin(baud);
-        break;
-    case 3:
-        Serial3.begin(baud);
-        break;
-    case 4:
-        Serial4.begin(baud);
-        break;
-    case 5:
-        Serial5.begin(baud);
-        break;
-    case 6:
-        Serial6.begin(baud);
-        break;
-    default:
-        break;
-    }
+    serial.begin(baud);
 }
+
+void Modbus::begin(unsigned long baud, SoftwareSerial &serial)
+{
+    isHWSerial = false;
+    serial.begin(baud);
+}
+
 
 void Modbus::constructModbusRequest(byte *frame)
 {
@@ -40,29 +24,10 @@ void Modbus::sendModbusRequest(byte *frame, byte length)
 {
     for (byte i = 0; i < length; i++)
     {
-        switch (index)
-        {
-        case 1:
-            Serial1.write(frame[i]);
-            break;
-        case 2:
-            Serial2.write(frame[i]);
-            break;
-        case 3:
-            Serial3.write(frame[i]);
-            break;
-        case 4:
-            Serial4.write(frame[i]);
-            break;
-        case 5:
-            Serial5.write(frame[i]);
-            break;
-        case 6:
-            Serial6.write(frame[i]);
-            break;
-        default:
-            Serial.println("Incorrect modbus request indx");
-            break;
+        if (isHWSerial) {
+            HWSerial->write(frame[i]);
+        } else {
+            SWSerial->write(frame[i]);
         }
     }
 }

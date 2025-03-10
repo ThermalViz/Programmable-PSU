@@ -27,12 +27,12 @@ void setup()
 {
   pinMode(button, INPUT_PULLUP);
   Serial.begin(9600);
-  psu1.begin(115200, 1);
-  psu2.begin(115200, 2);
-  psu3.begin(115200, 3);
-  psu4.begin(115200, 4, Serial4);
-  psu5.begin(115200, 5, Serial5);
-  psu6.begin(115200, 6, Serial6);
+  psu1.begin(115200, Serial1);
+  psu2.begin(115200, Serial2);
+  psu3.begin(115200, Serial3);
+  psu4.begin(115200, Serial4);
+  psu5.begin(115200, Serial5);
+  psu6.begin(115200, Serial6);
 }
 
 void loop()
