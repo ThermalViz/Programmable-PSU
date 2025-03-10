@@ -1,14 +1,14 @@
 #include "Modbus_CID.h"
 
-void Modbus::begin(unsigned long baud, HardwareSerial &serial)
+void Modbus::begin(unsigned long baud, HardwareSerial *serial)
 {
-    serial.begin(baud);
+    serial->begin(baud);
 }
 
-void Modbus::begin(unsigned long baud, SoftwareSerial &serial)
+void Modbus::begin(unsigned long baud, SoftwareSerial *serial)
 {
     isHWSerial = false;
-    serial.begin(baud);
+    serial->begin(baud);
 }
 
 
