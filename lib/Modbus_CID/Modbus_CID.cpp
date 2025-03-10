@@ -1,16 +1,17 @@
 #include "Modbus_CID.h"
 
-void Modbus::begin(unsigned long baud, HardwareSerial &serial)
+void Modbus::begin(unsigned long baud, HardwareSerial *serial)
 {
-    serial.begin(baud);
+    HWSerial = serial;
+    serial->begin(baud);
 }
 
-void Modbus::begin(unsigned long baud, SoftwareSerial &serial)
+void Modbus::begin(unsigned long baud, SoftwareSerial *serial)
 {
+    SWSerial = serial;
     isHWSerial = false;
-    serial.begin(baud);
+    serial->begin(baud);
 }
-
 
 void Modbus::constructModbusRequest(byte *frame)
 {
@@ -24,9 +25,12 @@ void Modbus::sendModbusRequest(byte *frame, byte length)
 {
     for (byte i = 0; i < length; i++)
     {
-        if (isHWSerial) {
+        if (isHWSerial)
+        {
             HWSerial->write(frame[i]);
-        } else {
+        }
+        else
+        {
             SWSerial->write(frame[i]);
         }
     }

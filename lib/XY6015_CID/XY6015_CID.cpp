@@ -1,13 +1,13 @@
 #include "XY6015_CID.h"
 
-void XY6015::begin(unsigned long baud, HardwareSerial serial)
+void XY6015::begin(unsigned long baud, HardwareSerial *serial)
 {
     modbus.begin(baud, serial);
     slaveAdress = 1;
     status = false;
 }
 
-void XY6015::begin(unsigned long baud, SoftwareSerial serial)
+void XY6015::begin(unsigned long baud, SoftwareSerial *serial)
 {
     modbus.begin(baud, serial);
     slaveAdress = 1;

@@ -11,8 +11,8 @@ public:
     int slaveAdress;
     int index;
     bool status;
-    void begin(unsigned long baud, HardwareSerial serial);
-    void begin(unsigned long baud, SoftwareSerial serial);
+    void begin(unsigned long baud, HardwareSerial *serial);
+    void begin(unsigned long baud, SoftwareSerial *serial);
     void setVoltage(float v);
     void setCurrent(float a);
     void toggle();
