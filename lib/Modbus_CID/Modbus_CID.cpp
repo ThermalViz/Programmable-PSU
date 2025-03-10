@@ -2,15 +2,16 @@
 
 void Modbus::begin(unsigned long baud, HardwareSerial *serial)
 {
+    HWSerial = serial;
     serial->begin(baud);
 }
 
 void Modbus::begin(unsigned long baud, SoftwareSerial *serial)
 {
+    SWSerial = serial;
     isHWSerial = false;
     serial->begin(baud);
 }
-
 
 void Modbus::constructModbusRequest(byte *frame)
 {
@@ -24,9 +25,12 @@ void Modbus::sendModbusRequest(byte *frame, byte length)
 {
     for (byte i = 0; i < length; i++)
     {
-        if (isHWSerial) {
+        if (isHWSerial)
+        {
             HWSerial->write(frame[i]);
-        } else {
+        }
+        else
+        {
             SWSerial->write(frame[i]);
         }
     }
