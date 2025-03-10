@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 #include "XY6015_CID.h"
 
 #define button 26
@@ -18,16 +19,20 @@ void setCurrent(int index, float current);
 void read(int index);
 void toggle(int index);
 
+SoftwareSerial Serial4(11, 10);
+SoftwareSerial Serial5(13, 12);
+SoftwareSerial Serial6(63, 62);
+
 void setup()
 {
   pinMode(button, INPUT_PULLUP);
   Serial.begin(9600);
-  psu1.begin(115200, 1, 1);
-  psu2.begin(115200, 1, 2);
-  psu3.begin(115200, 1, 3);
-  psu4.begin(115200, 1, 4);
-  psu5.begin(115200, 1, 5);
-  psu6.begin(115200, 1, 6);
+  psu1.begin(115200, 1);
+  psu2.begin(115200, 2);
+  psu3.begin(115200, 3);
+  psu4.begin(115200, 4, Serial4);
+  psu5.begin(115200, 5, Serial5);
+  psu6.begin(115200, 6, Serial6);
 }
 
 void loop()
@@ -62,38 +67,61 @@ void loop()
 
 void setVoltage(int index, float voltage)
 {
-  if (index == 1) psu1.setVoltage(voltage);
-  if (index == 2) psu2.setVoltage(voltage);
-  if (index == 3) psu3.setVoltage(voltage);
-  if (index == 4) psu4.setVoltage(voltage);
-  if (index == 5) psu5.setVoltage(voltage);
-  if (index == 6) psu6.setVoltage(voltage);
+  if (index == 1)
+    psu1.setVoltage(voltage);
+  if (index == 2)
+    psu2.setVoltage(voltage);
+  if (index == 3)
+    psu3.setVoltage(voltage);
+  if (index == 4)
+    psu4.setVoltage(voltage);
+  if (index == 5)
+    psu5.setVoltage(voltage);
+  if (index == 6)
+    psu6.setVoltage(voltage);
 }
 void setCurrent(int index, float current)
 {
-  if (index == 1) psu1.setCurrent(current);
-  if (index == 2) psu2.setCurrent(current);
-  if (index == 3) psu3.setCurrent(current);
-  if (index == 4) psu4.setCurrent(current);
-  if (index == 5) psu5.setCurrent(current);
-  if (index == 6) psu6.setCurrent(current);
+  if (index == 1)
+    psu1.setCurrent(current);
+  if (index == 2)
+    psu2.setCurrent(current);
+  if (index == 3)
+    psu3.setCurrent(current);
+  if (index == 4)
+    psu4.setCurrent(current);
+  if (index == 5)
+    psu5.setCurrent(current);
+  if (index == 6)
+    psu6.setCurrent(current);
 }
 void read(int index)
 {
-  if (index == 1) psu1.read();
-  if (index == 2) psu2.read();
-  if (index == 3) psu3.read();
-  if (index == 4) psu4.read();
-  if (index == 5) psu5.read();
-  if (index == 6) psu6.read();
+  if (index == 1)
+    psu1.read();
+  if (index == 2)
+    psu2.read();
+  if (index == 3)
+    psu3.read();
+  if (index == 4)
+    psu4.read();
+  if (index == 5)
+    psu5.read();
+  if (index == 6)
+    psu6.read();
 }
 void toggle(int index)
 {
-  if (index == 1) psu1.toggle();
-  if (index == 2) psu2.toggle();
-  if (index == 3) psu3.toggle();
-  if (index == 4) psu4.toggle();
-  if (index == 5) psu5.toggle();
-  if (index == 6) psu6.toggle();
+  if (index == 1)
+    psu1.toggle();
+  if (index == 2)
+    psu2.toggle();
+  if (index == 3)
+    psu3.toggle();
+  if (index == 4)
+    psu4.toggle();
+  if (index == 5)
+    psu5.toggle();
+  if (index == 6)
+    psu6.toggle();
 }
-

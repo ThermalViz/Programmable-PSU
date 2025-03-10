@@ -1,12 +1,8 @@
 #include "Modbus_CID.h"
-#include <SoftwareSerial.h>
 
 void Modbus::begin(unsigned long baud, int index)
 {
-    SoftwareSerial Serial4(11, 10);
-    SoftwareSerial Serial5(13, 12);
-    SoftwareSerial Serial6(63, 62);
-
+    Modbus::index = index;
     switch (index)
     {
     case 1:
@@ -44,7 +40,30 @@ void Modbus::sendModbusRequest(byte *frame, byte length)
 {
     for (byte i = 0; i < length; i++)
     {
-        Serial2.write(frame[i]);
+        switch (index)
+        {
+        case 1:
+            Serial1.write(frame[i]);
+            break;
+        case 2:
+            Serial2.write(frame[i]);
+            break;
+        case 3:
+            Serial3.write(frame[i]);
+            break;
+        case 4:
+            Serial4.write(frame[i]);
+            break;
+        case 5:
+            Serial5.write(frame[i]);
+            break;
+        case 6:
+            Serial6.write(frame[i]);
+            break;
+        default:
+            Serial.println("Incorrect modbus request indx");
+            break;
+        }
     }
 }
 

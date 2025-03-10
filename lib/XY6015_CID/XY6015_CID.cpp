@@ -1,16 +1,16 @@
 #include "XY6015_CID.h"
 
-void XY6015::begin(unsigned long baud, byte address, int index)
+void XY6015::begin(unsigned long baud, int indx)
 {
+    index = indx;
     modbus.begin(baud, index);
-    slaveAdress = address;
+    slaveAdress = 1;
     status = false;
 }
 
 void XY6015::setVoltage(float v)
 {
     int voltage = v * 100;
-
     createFrame(0x0000, voltage, "SET");
 }
 
@@ -39,7 +39,7 @@ void XY6015::toggle()
 void XY6015::createFrame(byte add, int val, String mode)
 {
     byte requestFrame[8];
-    byte frameMode;
+    byte frameMode = 0;
 
     if (mode == "SET")
     {
@@ -50,7 +50,7 @@ void XY6015::createFrame(byte add, int val, String mode)
         frameMode = 0x03;
     }
 
-    if (frameMode != NULL)
+    if (frameMode != 0)
     {
         requestFrame[0] = slaveAdress; // Slave Address
         requestFrame[1] = frameMode;   // Function Code
