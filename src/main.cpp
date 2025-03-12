@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include "XY6015_CID.h"
+#include "Wire_Master.h"
 
 #define button 26
 
@@ -20,10 +21,13 @@ SoftwareSerial Serial4(11, 10);
 SoftwareSerial Serial5(13, 12);
 SoftwareSerial Serial6(63, 62);
 
+WireMaster comm;
+
 void setup()
 {
   pinMode(button, INPUT_PULLUP);
   Serial.begin(9600);
+  comm.begin();
   psu1.begin(115200, &Serial2);
   psu2.begin(115200, &Serial3);
   psu3.begin(115200, &Serial1);
@@ -39,26 +43,32 @@ void loop()
     String outputType = received.substring(1, 5); // select the first 4 characters of command
     int index = received.substring(0, 1).toInt();
 
-    if (outputType == "SETV")
+    if (index < 4)
     {
-      float voltage = received.substring(5, received.length()).toFloat();
-      setVoltage(index, voltage);
+      if (outputType == "SETV")
+      {
+        float voltage = received.substring(5, received.length()).toFloat();
+        setVoltage(index, voltage);
+      }
+      else if (outputType == "SETA")
+      {
+        float curr = received.substring(5, received.length()).toFloat();
+        setCurrent(index, curr);
+      }
+      else if (outputType == "READ")
+      {
+        read(index);
+      }
+      else if (outputType == "TOGG")
+      {
+        toggle(index);
+      }
     }
-    else if (outputType == "SETA")
+    else
     {
-      float curr = received.substring(5, received.length()).toFloat();
-      setCurrent(index, curr);
-    }
-    else if (outputType == "READ")
-    {
-      read(index);
-    }
-    else if (outputType == "TOGG")
-    {
-      toggle(index);
+      comm.transmit(received);
     }
   }
-
 
   psu1.awaitResponse();
   psu2.awaitResponse();
