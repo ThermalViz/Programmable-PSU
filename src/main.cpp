@@ -10,9 +10,6 @@ bool isOn = false;
 XY6015 psu1;
 XY6015 psu2;
 XY6015 psu3;
-XY6015 psu4;
-XY6015 psu5;
-XY6015 psu6;
 
 void setVoltage(int index, float voltage);
 void setCurrent(int index, float current);
@@ -30,9 +27,6 @@ void setup()
   psu1.begin(115200, &Serial2);
   psu2.begin(115200, &Serial3);
   psu3.begin(115200, &Serial1);
-  psu4.begin(115200, &Serial4);
-  psu5.begin(115200, &Serial5);
-  psu6.begin(115200, &Serial6);
   Serial.println("Initializing programmable psu...");
 }
 
@@ -64,6 +58,11 @@ void loop()
       toggle(index);
     }
   }
+
+
+  psu1.awaitResponse();
+  psu2.awaitResponse();
+  psu3.awaitResponse();
 }
 
 void setVoltage(int index, float voltage)
@@ -74,12 +73,6 @@ void setVoltage(int index, float voltage)
     psu2.setVoltage(voltage);
   if (index == 3)
     psu3.setVoltage(voltage);
-  if (index == 4)
-    psu4.setVoltage(voltage);
-  if (index == 5)
-    psu5.setVoltage(voltage);
-  if (index == 6)
-    psu6.setVoltage(voltage);
 }
 void setCurrent(int index, float current)
 {
@@ -89,12 +82,6 @@ void setCurrent(int index, float current)
     psu2.setCurrent(current);
   if (index == 3)
     psu3.setCurrent(current);
-  if (index == 4)
-    psu4.setCurrent(current);
-  if (index == 5)
-    psu5.setCurrent(current);
-  if (index == 6)
-    psu6.setCurrent(current);
 }
 void read(int index)
 {
@@ -104,12 +91,6 @@ void read(int index)
     psu2.read();
   if (index == 3)
     psu3.read();
-  if (index == 4)
-    psu4.read();
-  if (index == 5)
-    psu5.read();
-  if (index == 6)
-    psu6.read();
 }
 void toggle(int index)
 {
@@ -119,10 +100,4 @@ void toggle(int index)
     psu2.toggle();
   if (index == 3)
     psu3.toggle();
-  if (index == 4)
-    psu4.toggle();
-  if (index == 5)
-    psu5.toggle();
-  if (index == 6)
-    psu6.toggle();
 }

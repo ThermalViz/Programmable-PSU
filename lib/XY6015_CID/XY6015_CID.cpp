@@ -3,13 +3,7 @@
 void XY6015::begin(unsigned long baud, HardwareSerial *serial)
 {
     modbus.begin(baud, serial);
-    slaveAdress = 1;
-    status = false;
-}
-
-void XY6015::begin(unsigned long baud, SoftwareSerial *serial)
-{
-    modbus.begin(baud, serial);
+    HWSerial = serial;
     slaveAdress = 1;
     status = false;
 }
@@ -30,7 +24,7 @@ void XY6015::setCurrent(float a)
 void XY6015::read()
 {
     // 14 set for value for 14 registers to read
-    createFrame(0x00, 14, "READ");
+    createFrame(0x00, 0x0014, "READ");
 }
 
 void XY6015::toggle()
@@ -40,6 +34,22 @@ void XY6015::toggle()
     createFrame(0x0012, ((status) ? 0x0001 : 0x0000), "SET");
 
     Serial.println("TOGGLED: " + String(status));
+}
+
+void XY6015::awaitResponse()
+{
+    if (HWSerial->available())
+    {
+        HWSerial->readBytes(buffer, 40);
+    }
+
+    for (byte data : buffer)
+    {
+        Serial.print(data, HEX);
+        Serial.print(" ");
+    }
+
+    Serial.println();
 }
 
 void XY6015::createFrame(byte add, int val, String mode)

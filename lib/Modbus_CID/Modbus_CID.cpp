@@ -6,16 +6,8 @@ void Modbus::begin(unsigned long baud, HardwareSerial *serial)
     serial->begin(baud);
 }
 
-void Modbus::begin(unsigned long baud, SoftwareSerial *serial)
-{
-    SWSerial = serial;
-    isHWSerial = false;
-    serial->begin(baud);
-}
-
 void Modbus::constructModbusRequest(byte *frame)
 {
-
     uint16_t crc = calculateCRC(frame, 6);
     frame[6] = crc & 0xFF;        // CRC low byte
     frame[7] = (crc >> 8) & 0xFF; // CRC high byte
@@ -25,14 +17,7 @@ void Modbus::sendModbusRequest(byte *frame, byte length)
 {
     for (byte i = 0; i < length; i++)
     {
-        if (isHWSerial)
-        {
-            HWSerial->write(frame[i]);
-        }
-        else
-        {
-            SWSerial->write(frame[i]);
-        }
+        HWSerial->write(frame[i]);
     }
 }
 
