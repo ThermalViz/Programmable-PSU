@@ -28,6 +28,8 @@ String PSU3_READ = "";
 int x = 0;
 WireMaster comm;
 
+bool newData = false;
+
 void setup()
 {
   pinMode(button, INPUT_PULLUP);
@@ -45,25 +47,26 @@ void loop()
   if (Serial.available())
   {
 
-    char* received = Serial.readStringUntil('\n').toCharArray();
-    Serial.println(received);
-    comm.transmit(received);
+    String raw = Serial.readStringUntil('\n');
 
-    String received = Serial.readStringUntil('\n');
-    String outputType = received.substring(1, 5); // select the first 4 characters of command
-    int index = received.substring(0, 1).toInt();
+    char received[raw.length() + 1];
 
-    if (received == "WHOU") Serial.println("SUPP");
+    raw.toCharArray(received, sizeof(received));
+
+    String outputType = raw.substring(1, 5); // select the first 4 characters of command
+    int index = raw.substring(0, 1).toInt();
+
+    if (raw == "WHOU") Serial.println("SUPP");
     if (index < 4)
     {
       if (outputType == "SETV")
       {
-        float voltage = received.substring(5, received.length()).toFloat();
+        float voltage = raw.substring(5, raw.length()).toFloat();
         setVoltage(index, voltage);
       }
       else if (outputType == "SETA")
       {
-        float curr = received.substring(5, received.length()).toFloat();
+        float curr = raw.substring(5, raw.length()).toFloat();
         setCurrent(index, curr);
       }
       else if (outputType == "READ")
@@ -72,13 +75,13 @@ void loop()
       }
       else if (outputType == "TOGG")
       {
-        int state = received.substring(5, 6).toInt();
+        int state = raw.substring(5, 6).toInt();
         toggle(index, state);
       }
     }
     else
     {
-      Serial.println(received);
+      Serial.println(raw);
       comm.transmit(received);
     }
   }
