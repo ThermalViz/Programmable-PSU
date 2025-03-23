@@ -16,13 +16,17 @@ XY6015 psu3;
 void setVoltage(int index, float voltage);
 void setCurrent(int index, float current);
 void read(int index);
-void toggle(int index);
+void toggle(int index, bool state);
 
 SoftwareSerial Serial4(11, 10);
 SoftwareSerial Serial5(13, 12);
 SoftwareSerial Serial6(63, 62);
 
-// WireMaster comm;
+String PSU1_READ = "";
+String PSU2_READ = "";
+String PSU3_READ = "";
+int x = 0;
+WireMaster comm;
 
 void setup()
 {
@@ -41,14 +45,15 @@ void loop()
   if (Serial.available())
   {
 
-    // String received = Serial.readStringUntil('\n');
-    // Serial.println(received);
-    // comm.transmit(received);
+    char* received = Serial.readStringUntil('\n').toCharArray();
+    Serial.println(received);
+    comm.transmit(received);
 
     String received = Serial.readStringUntil('\n');
     String outputType = received.substring(1, 5); // select the first 4 characters of command
     int index = received.substring(0, 1).toInt();
 
+    if (received == "WHOU") Serial.println("SUPP");
     if (index < 4)
     {
       if (outputType == "SETV")
@@ -67,20 +72,22 @@ void loop()
       }
       else if (outputType == "TOGG")
       {
-        toggle(index);
+        int state = received.substring(5, 6).toInt();
+        toggle(index, state);
       }
     }
     else
     {
+      Serial.println(received);
       comm.transmit(received);
     }
   }
 
   String recieve = comm.receive();
 
-  psu1.awaitResponse();
-  psu2.awaitResponse();
-  psu3.awaitResponse();
+  // PSU1_READ = psu1.awaitResponse();
+  // PSU2_READ = psu2.awaitResponse();
+  // PSU3_READ = psu3.awaitResponse();
 }
 
 void setVoltage(int index, float voltage)
@@ -110,12 +117,12 @@ void read(int index)
   if (index == 3)
     psu3.read();
 }
-void toggle(int index)
+void toggle(int index, bool state)
 {
   if (index == 1)
-    psu1.toggle();
+    psu1.toggle(state);
   if (index == 2)
-    psu2.toggle();
+    psu2.toggle(state);
   if (index == 3)
-    psu3.toggle();
+    psu3.toggle(state);
 }

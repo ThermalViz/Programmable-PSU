@@ -8,15 +8,10 @@ void WireMaster::begin()
 void WireMaster::transmit(char *payload)
 {
     Wire.beginTransmission(SLAVE_ADDR);
-    Wire.println(payload);
+    Wire.write(payload);
     Wire.endTransmission();
 }
-void WireMaster::transmit(String payload)
-{
-    Wire.beginTransmission(SLAVE_ADDR);
-    Wire.println(payload);
-    Wire.endTransmission();
-}
+
 
 String WireMaster::receive()
 {

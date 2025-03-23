@@ -5,7 +5,7 @@
 #include <SoftwareSerial.h>
 #include "Wire_Master.h"
 
-WireMaster comm;
+// WireMaster comm;
 
 class XY6015
 {
@@ -15,13 +15,14 @@ public:
     int slaveAdress;
     int index;
     bool status;
-    byte buffer[40];
+    byte buffer[20];
     void begin(unsigned long baud, HardwareSerial *serial);
     void setVoltage(float v);
     void setCurrent(float a);
-    void toggle();
+    void toggle(bool state);
     void read();
-    void awaitResponse();
+    String awaitResponse();
+    bool compareArray(byte array1[20], byte array2[20]);
 
 private:
     void createFrame(byte register, int value, String mode);

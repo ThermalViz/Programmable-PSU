@@ -11,7 +11,6 @@ class WireMaster
 public:
     void begin();
     void transmit(char *payload);
-    void transmit(String payload);
     String receive();
 };
 #endif
