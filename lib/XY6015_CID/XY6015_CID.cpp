@@ -2,6 +2,7 @@
 
 void XY6015::begin(unsigned long baud, HardwareSerial *serial)
 {
+    // comm.begin();
     modbus.begin(baud, serial);
     HWSerial = serial;
     slaveAdress = 1;

@@ -3,6 +3,9 @@
 #include <Arduino.h>
 #include "Modbus_CID.h"
 #include <SoftwareSerial.h>
+#include "Wire_Master.h"
+
+WireMaster comm;
 
 class XY6015
 {

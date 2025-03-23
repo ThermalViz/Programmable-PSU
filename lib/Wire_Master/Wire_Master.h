@@ -3,6 +3,8 @@
 #include <Wire.h>
 
 #define SLAVE_ADDR 69
+#define MASTER_ADDR 1
+
 
 class WireMaster
 {

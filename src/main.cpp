@@ -7,6 +7,7 @@
 
 bool isPressed = false;
 bool isOn = false;
+String recieveString = "";
 
 XY6015 psu1;
 XY6015 psu2;
@@ -39,6 +40,11 @@ void loop()
 
   if (Serial.available())
   {
+
+    // String received = Serial.readStringUntil('\n');
+    // Serial.println(received);
+    // comm.transmit(received);
+
     String received = Serial.readStringUntil('\n');
     String outputType = received.substring(1, 5); // select the first 4 characters of command
     int index = received.substring(0, 1).toInt();
@@ -70,6 +76,8 @@ void loop()
     }
   }
 
+  String recieve = comm.receive();
+  
   psu1.awaitResponse();
   psu2.awaitResponse();
   psu3.awaitResponse();
