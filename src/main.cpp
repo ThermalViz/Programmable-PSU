@@ -22,7 +22,7 @@ SoftwareSerial Serial4(11, 10);
 SoftwareSerial Serial5(13, 12);
 SoftwareSerial Serial6(63, 62);
 
-WireMaster comm;
+// WireMaster comm;
 
 void setup()
 {
@@ -77,7 +77,7 @@ void loop()
   }
 
   String recieve = comm.receive();
-  
+
   psu1.awaitResponse();
   psu2.awaitResponse();
   psu3.awaitResponse();
