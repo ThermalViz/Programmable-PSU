@@ -5,7 +5,7 @@
 
 #define button 26
 
-bool isPressed = false;
+bool iPressed = false;
 bool isOn = false;
 String recieveString = "";
 
